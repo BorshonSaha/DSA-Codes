@@ -31,8 +31,10 @@ void removeCycle(Node* head)
         slowPtr->next = NULL ;
         return ;
     }
+
     fastPtr = head ;
-    while(fastPtr->next != slowPtr->next){
+    while(fastPtr->next != slowPtr->next)
+    {
         fastPtr = fastPtr->next ;
         slowPtr = slowPtr->next ;
     }
@@ -77,7 +79,7 @@ int main()
     n2.next = &n3;
     n3.next = &n4;
     n4.next = &n5;
-    n5.next = &n2; /// making cycle
+    n5.next = &n1; /// making cycle
 
     removeCycle(head);
 
