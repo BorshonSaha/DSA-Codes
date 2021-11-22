@@ -16,35 +16,30 @@ public:
 
 Node* startingPointOfCycle(Node* head)
 {
+    if(head == NULL || head->next == NULL)
+        return NULL;
+
     Node *fastPtr = head, *slowPtr = head;
 
-    do
+    while(fastPtr != NULL && fastPtr->next != NULL) /// search for loop
     {
-        fastPtr = fastPtr->next->next ;
         slowPtr = slowPtr->next;
-    }while(fastPtr != slowPtr);
+        fastPtr = fastPtr->next->next;
 
-    if(fastPtr == head)
-        return fastPtr;
-
-    fastPtr = head;
-    while(fastPtr->next != slowPtr->next)
-    {
-        fastPtr = fastPtr->next ;
-        slowPtr = slowPtr->next ;
+        if(fastPtr == slowPtr)
+            break;
     }
-    fastPtr = fastPtr->next;
-    return fastPtr;
-}
 
-void print(Node *head)
-{
-    Node *temp = head;
-    while(temp != NULL)
+    if(slowPtr != fastPtr) /// if loop does not exist
+        return NULL;
+
+    slowPtr = head;
+    while(slowPtr != fastPtr)
     {
-        cout<<temp->data<<" ";
-        temp = temp->next;
+        slowPtr = slowPtr->next;
+        fastPtr = fastPtr->next;
     }
+    return slowPtr;
 }
 
 int main()
@@ -56,14 +51,17 @@ int main()
     Node n3(30);
     Node n4(40);
     Node n5(50);
+    Node n6(60);
 
     n1.next = &n2;
     n2.next = &n3;
     n3.next = &n4;
     n4.next = &n5;
-    n5.next = &n2; /// making cycle
+    n5.next = &n6;
+    n6.next = &n1; /// &n3 / making cycle
 
-    cout<<"Starting node of cycle : "<<startingPointOfCycle(head)->data<<"\n";
+    Node *res = startingPointOfCycle(head);
+    res ? cout<<"Cycle starting node is : "<<res->data : cout << "Loop does not exist";
 }
 
 
